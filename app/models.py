@@ -4,7 +4,7 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import login_manager
 from flask_login import UserMixin, AnonymousUserMixin
-from datetime import datetime
+import datetime
 import hashlib
 
 
@@ -91,8 +91,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
@@ -192,7 +192,7 @@ class User(UserMixin, db.Model):
         return self.can(Permission.ADMIN)
 
     def ping(self):
-        self.last_seen = datetime.utcnow()
+        self.last_seen = datetime.datetime.utcnow()
         db.session.add(self)
         db.session.commit()
 
@@ -215,5 +215,5 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))

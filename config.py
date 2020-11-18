@@ -16,6 +16,8 @@ class Config:
     PONGPONG_ADMIN = os.environ.get('PONGPONG_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    PONGPONG_POSTS_PER_PAGE = 20
+
     @staticmethod
     def init_app(app):
         pass
