@@ -2,8 +2,8 @@ from flask import render_template, redirect, url_for, abort, flash
 from flask_login import login_required, current_user
 from . import main
 from ..decorators import admin_required, permission_required
-from ..models import Permission, User, Role
-from .forms import EditProfileForm, EditProfileAdminForm
+from ..models import Permission, User, Role, Post
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 from flask_login import login_required
 
@@ -11,7 +11,14 @@ from flask_login import login_required
 @main.route('/')
 def index():
     return render_template('index.html')
-
+    # form = PostForm()
+    # if current_user.can(Permission.WRITE) and form.validate_on_submit():
+    #     post = Post(body=form.body.data, author=current_user._get_current_object())
+    #     db.session.add(post)
+    #     db.session.commit()
+    #     return redirect(url_for('.index'))
+    # posts = Post.query.order_by(Post.timestamp.desc()).all()
+    # return render_template('index.html', form=form, posts=posts)
 
 @main.route('/secret')
 @login_required

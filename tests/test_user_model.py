@@ -3,6 +3,7 @@ import time
 from app import create_app, db
 from app.models import User, AnonymousUser, Role, Permission
 from datetime import datetime
+import moment
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -153,6 +154,10 @@ class UserModelTestCase(unittest.TestCase):
         db.session.add(u)
         db.session.commit()
         time.sleep(2)
+        # print(u.member_since)
+        print(moment.now())
+        # print(u.last_seen)
+        # print(moment.utcnow().format('L'))
         last_seen_before = u.last_seen
         u.ping()
         self.assertTrue(u.last_seen > last_seen_before)
