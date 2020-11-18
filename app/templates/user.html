@@ -24,7 +24,7 @@
             Member since {{ user.member_since.strftime("%Y-%m-%d") }}.
             Last seen {{ user.last_seen.strftime("%Y-%m-%d") }}.
         </p>
-        <p>{{ user.posts.count() }} posts.</p>
+        <p>{{ user.posts.count() }} posts. {{ user.comments.count() }} comments.</p>
         <p>
             {% if current_user.can(Permission.FOLLOW) and user != current_user %}
             {% if not current_user.is_following(user) %}

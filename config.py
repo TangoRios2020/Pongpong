@@ -18,6 +18,7 @@ class Config:
 
     PONGPONG_POSTS_PER_PAGE = 20
     PONGPONG_FOLLOWERS_PER_PAGE = 50
+    PONGPONG_COMMENTS_PER_PAGE = 30
 
     @staticmethod
     def init_app(app):
