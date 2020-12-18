@@ -1,6 +1,6 @@
 import bleach
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app, request, url_for
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
+from flask import current_app, request, url_for, g
 from app.exceptions import ValidationError
 from markdown import markdown
 
@@ -283,9 +283,13 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
-        except:
-            return None
-        return User.query.get(data['id'])
+        except (BadSignature, SignatureExpired):
+            return False
+        user = User.query.get(data['id'])
+        if user is None:
+            return False
+        g.user = user
+        return True
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -306,6 +310,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
