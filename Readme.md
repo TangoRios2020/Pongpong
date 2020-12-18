@@ -12,4 +12,9 @@
     5 执行 flask run 运行程序.
     
     PythonAnywhere 运行步骤
-    
+    1 创建虚拟环境 
+        virtualenv --python=python3.9 Flask_env
+    2 激活虚拟环境
+        source Flask_env/bin/activate
+    3 下载依赖
+        pip install -r requirements.txt
